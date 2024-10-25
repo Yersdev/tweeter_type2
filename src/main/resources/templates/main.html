@@ -3,31 +3,205 @@
 <head>
   <meta charset="UTF-8">
   <title>Messages</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding-top: 20px;
+    }
+
+    .tweet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .tweet-block {
+      background-color: #4eb4ff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .tweet-block b {
+      font-size: 1.1em;
+      color: #007bff;
+    }
+
+    .tweet-block span {
+      display: block;
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    .tweet-block i {
+      display: block;
+      margin-top: 5px;
+      color: #666;
+    }
+
+    .tweet-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .tweet-button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Стили для модального окна */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    .list{
+      padding-top: 15px;
+      padding-bottom: 15px;
+      font-size: 22px;
+      font-family: 'Arial', sans-serif;
+      font-weight: 600;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 30%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #000;
+    }
+
+    /* Стили для формы ввода */
+    .input-text_place, .input-tag {
+      display: block;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    input, textarea{
+      max-width: 95%;
+      margin: 5px;
+    }
+
+
+    .input-text_place, .input-tag input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .input-text input:focus, .input-tag input:focus {
+      border-color: #007bff;
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    button[type="submit"] {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
 </head>
 <body>
-<form th:action="@{/logout}" method="post">
-  <input type="submit" value="Sign Out"/>
-</form>
-<div>
-  <form action="#" th:action="@{/main}" th:method="post">
-    <label>
-      <input type="text" name="text" placeholder="Введите сообщение" />
-    </label>
-    <label>
-      <input type="text" name="tag" placeholder="Тэг" />
-    </label>
-    <button type="submit">Добавить</button>
-  </form>
-</div>
+<div class="container">
 
-<div>Список сообщений</div>
-<div th:each="message : ${messages}">
-  <div>
-    <b th:text="${message.id}"></b>
-    <span th:text="${message.text}"></span>
-    <i th:text="${message.tag}"></i>
+  <button class="tweet-button" id="tweetBtn">Твитнуть</button>
+
+  <div id="tweetModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <form th:action="@{/main}" th:method="post">
+        <label class="input-text">
+          <textarea class="input-text_place" name="text" placeholder="Введите сообщение" rows="8" style="resize: none;"></textarea>
+        </label>
+        <label class="input-tag">
+          <input type="text" name="tag" placeholder="Тэг" />
+        </label>
+        <button type="submit">Добавить</button>
+      </form>
+    </div>
   </div>
+
+  <div class="list">Список сообщений</div>
+  <div class="tweet-grid">
+    <div th:each="message : ${messages}" class="tweet-block">
+      <b th:text="${message.id}"></b>
+      <span th:text="${message.text}"></span>
+      <i th:text="${message.tag}"></i>
+    </div>
+  </div>
+
 </div>
 
+<script>
+  const tweetBtn = document.getElementById('tweetBtn');
+  const modal = document.getElementById('tweetModal');
+  const closeModal = document.getElementById('closeModal');
+
+  tweetBtn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  closeModal.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
 </body>
 </html>

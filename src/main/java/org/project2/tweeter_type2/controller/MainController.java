@@ -11,7 +11,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class GreetingController {
+public class MainController {
 
      private final MessageServices messageServices;
      @GetMapping("/")

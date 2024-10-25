@@ -2,12 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Page</title>
+    <style>
+        /* Общие стили для всей страницы */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .main_block{
+            display: flex;
+            flex-direction: column;
+        }
+        div {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            background-color: #fff;
+            padding: 20px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Стили для кнопки-ссылки */
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            color: white;
+            background-color: #007BFF;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Стили при наведении на ссылку */
+        a:hover {
+            background-color: #0056b3;
+            box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            div {
+                font-size: 1.5rem;
+                padding: 15px 30px;
+            }
+
+            a {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div>
-    Hello user
+<div class = "main_block">
+    <div>
+        Hello user
+    </div>
+    <a href="main">Main Page</a>
 </div>
-<a href="main">Main Page</a>
 </body>
 </html>
