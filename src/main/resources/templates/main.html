@@ -35,7 +35,13 @@
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-
+    .error{
+      color: red;
+      font-weight: 600;
+      font-size: 14px;
+      padding-left: 5px;
+      padding-top: 5px;
+    }
     .tweet-block b {
       font-size: 1.1em;
       color: #007bff;
@@ -171,6 +177,9 @@
     .delete:hover, .update:hover{
     text-decoration: underline;
     }
+    a{
+      text-decoration: none;
+    }
 
   </style>
 </head>
@@ -178,19 +187,23 @@
 <div class="container">
 
   <button class="tweet-button" id="tweetBtn">Твитнуть</button>
+  <a href="/" class="tweet-button">Back To Menu</a>
 
   <div id="tweetModal" class="modal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
-      <form th:action="@{/main}" th:method="post">
+      <form th:action="@{/main}" th:object="${message}" method="post">
         <label class="input-text">
-          <textarea class="input-text_place" name="text" placeholder="Введите сообщение" rows="8" style="resize: none;"></textarea>
+          <textarea class="input-text_place" th:field="*{text}" placeholder="Введите сообщение" rows="8" style="resize: none;"></textarea>
+          <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" class="error"></div>
         </label>
         <label class="input-tag">
-          <input type="text" name="tag" placeholder="Тэг" />
+          <input type="text" th:field="*{tag}" placeholder="Тэг"/>
+          <div th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}" class="error"></div>
         </label>
         <button type="submit">Добавить</button>
       </form>
+
     </div>
   </div>
 

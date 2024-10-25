@@ -34,11 +34,14 @@ public class MainController {
     }
 
     @PostMapping("/main")
-    public String addMessage(@Valid Message message, BindingResult bindingResult, Model model) {
+    public String addMessage(
+            @Valid Message message,
+            BindingResult bindingResult,
+            Model model
+    ) {
         if (bindingResult.hasErrors()) {
-            List<Message> messages = messageServices.findAll();
-            model.addAttribute("messages", messages);
-            return "main"; // Возвращаем ту же страницу с отображением ошибок
+            model.addAttribute("tag", bindingResult.getAllErrors());
+            return "main";
         }
 
         messageServices.save(message);
@@ -46,9 +49,9 @@ public class MainController {
     }
     @GetMapping("/edit/{id}")
     public String editPage(@PathVariable("id") int id, Model model) {
-        Message message = messageServices.findById(id); // Найти сообщение по ID
-        model.addAttribute("message", message); // Передать сообщение в шаблон
-        return "edit"; // Переход на страницу редактирования
+        Message message = messageServices.findById(id);
+        model.addAttribute("message", message);
+        return "edit";
     }
 
     @PostMapping("/update/{id}")
