@@ -7,9 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,6 +44,30 @@ public class MainController {
         messageServices.save(message);
         return "redirect:/main";
     }
+    @GetMapping("/edit/{id}")
+    public String editPage(@PathVariable("id") int id, Model model) {
+        Message message = messageServices.findById(id); // Найти сообщение по ID
+        model.addAttribute("message", message); // Передать сообщение в шаблон
+        return "edit"; // Переход на страницу редактирования
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateMessage(@PathVariable("id") int id, @ModelAttribute Message updatedMessage) {
+        Message existingMessage = messageServices.findById(id); // Найти существующее сообщение по ID
+        if (existingMessage != null) {
+            existingMessage.setText(updatedMessage.getText()); // Обновить текст
+            existingMessage.setTag(updatedMessage.getTag());   // Обновить тег
+            messageServices.save(existingMessage); // Сохранить изменения в существующем объекте
+        }
+        return "redirect:/main";
+    }
+    @GetMapping("/delete/{id}")
+    public String deleteMessage(@PathVariable("id") int id) {
+        messageServices.deleteById(id);
+        return "redirect:/main";
+    }
+}
+
 //    @PostMapping("/main")
 //    public String updateMessage(@Valid Message message, BindingResult bindingResult, Model model) {
 //        if (bindingResult.hasErrors()) {
@@ -53,4 +80,4 @@ public class MainController {
 //        messageServices.save(updMessage);
 //        return "redirect:/main";
 //    }
-}
+

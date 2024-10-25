@@ -17,6 +17,11 @@
       padding-top: 20px;
     }
 
+
+    .input-tag{
+      font-size: 10px;
+    }
+
     .tweet-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -25,7 +30,7 @@
     }
 
     .tweet-block {
-      background-color: #bce1ff;
+      background-color: #4eb4ff;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -150,6 +155,22 @@
     button[type="submit"]:hover {
       background-color: #0056b3;
     }
+    .delete, .update{
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 10px;
+      text-decoration: none;
+    }
+    .delete {
+      color: #cf2525;
+    }
+    .update{
+      color: #129512;
+    }
+    .delete:hover, .update:hover{
+    text-decoration: underline;
+    }
 
   </style>
 </head>
@@ -179,6 +200,10 @@
       <b th:text="${message.id}"></b>
       <span th:text="${message.text}"></span>
       <i th:text="${message.tag}"></i>
+      <div class="tweet-actions">
+        <a class="update" th:href="@{/edit/{id}(id=${message.id})}">Редактировать</a>
+        <a class="delete" th:href="@{/delete/{id}(id=${message.id})}">Удалить</a>
+      </div>
     </div>
   </div>
 
