@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-public class MainController {
+public class MessageController {
 
     private final MessageServices messageServices;
 
@@ -39,14 +38,19 @@ public class MainController {
             BindingResult bindingResult,
             Model model
     ) {
+        List<Message> messages = messageServices.findAll();
+        model.addAttribute("messages", messages);
+        model.addAttribute("message", message);
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("tag", bindingResult.getAllErrors());
+            model.addAttribute("modalOpen", true); // Указать, что модальное окно должно остаться открытым
             return "main";
         }
 
         messageServices.save(message);
         return "redirect:/main";
     }
+
     @GetMapping("/edit/{id}")
     public String editPage(@PathVariable("id") int id, Model model) {
         Message message = messageServices.findById(id);
